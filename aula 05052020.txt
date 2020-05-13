@@ -1,0 +1,2 @@
+1 - levantamento de requisitos
+2 - estruturar EAP
