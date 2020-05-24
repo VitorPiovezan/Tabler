@@ -252,11 +252,6 @@ export const ButtonChatUser = styled.TouchableOpacity`
 
 //Styles Home
 
-export const ContainerProfile = styled.View`
-    flex: auto;
-    align-items: center;
-    background-color: #D9BA8E;
-`;
 export const ViewHeaderHome = styled.View`
     border-bottom-left-radius: 100;
     border-bottom-right-radius: 100;
@@ -281,140 +276,97 @@ export const ViewConfigsProfile = styled.View`
     justify-content: space-between;
     align-items: center;
     margin: auto;
-    width: 70%;
+    width: 75%;
     height: 160px;
     flex-direction: row;
 `;
 export const TextBoxNameProfile = styled.Text`
     color: #DDBC91;
     font-size: 20;
+    font-family: "TheWildBreathOfZelda"
 `;
+
 export const ViewTextProfile = styled.View`
     width: 100%;
     align-items: center;
     height: 40px;    
 `;
-export const ViewContentProfile = styled.View`
-    width: 100%;
-    background-color: #303030;
-    height: 140px;
-    margin-top: 15px;
-    justify-content: center;
-`;
-export const TextBoxContentProfile = styled.Text`
-    font-size: 20;
-    color: #fff;
-    font-weight: bold;
-    margin-left: 15px;
-    margin-top: 10px;
-`;
-export const ViewGamesProfile = styled.View`
-    width: 100%;
-    height: 90px;
-    flex-direction: row;
-    padding: 5px;
-    border-radius: 7;
-    margin: 10px 0 10px 0;
-`;
-export const ImgUserProfile = styled.Image`
-    width: 60px;
-    height: 60px;
+export const ImgHomeConfig = styled.Image`
+    width: 110px;
+    height: 110px;
+    background-color: #DDBC91;
     border-radius: 100;
 `;
-export const NameUserProfile = styled.Text`
-    color: #fff;
+
+export const TitleHome = styled.Text`
+    font-size: 28;
+    text-align: center;
+    padding: 20px;
     font-weight: bold;
-    font-size: 14;
-    margin-top: 5px;
-`;
-export const ViewRodape = styled.View`
-    width: 100%;
-    height: 70px;
-    bottom: 0;
-    background-color: #303030;
-    position: absolute;
-    align-items: center;
-    justify-content: center;
-`;
-export const TextBoxRodape = styled.Text`
-    font-size: 12;
-    color: #ccc;
-    margin-bottom: 4px;
-`;
-export const ViewButtonOut = styled.View`
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 60px;
-    background-color: #303030;
-    border-top-left-radius: 30px;
-    border-top-right-radius: 30px;
-`;
-export const ButtonOut = styled.TouchableOpacity`
-
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 60px;
-    position: absolute;
-    bottom: 75;
-`;
-export const TextBoxButtonOut = styled.Text`
-    font-size: 20;
-    color: #ddd;
+    color: #5e3200
 `;
 
-export const CardModal = styled.TouchableOpacity`
+export const Input = styled.TextInput`
+    color: #684d00;
+    background-color: #F9EBD5;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #684d00;
+    padding: 10px;
     width: 80%;
-    height: 60%;
-    background-color: #202020;
-    border-radius: 7px;
-    border: 1px;
-    border-color: rgba(10, 10, 10, 0.75);
+    border-radius: 20px;
 `;
 
-export const ImageModal = styled.Image`
+export const ViewRoom = styled.View`
+    border-style: solid;
+    border-top-width: 1px;
+    border-top-color: #777;
     width: 100%;
-    height: 30%;
-    border-top-left-radius: 7px;
-    border-top-right-radius: 7px;
+    padding: 15px 5px;
+    flex-direction: row;
 `;
 
-export const NomeModal = styled.Text`
+export const ViewOpenRoom = styled.View`
+    margin-top: 20px;
+    width: 80%;
+    flex: 1;
+`;
+
+export const ViewTitles = styled.View`
+`;
+
+export const TitleRoom = styled.Text`
+    padding-bottom: 5px;
     font-weight: bold;
-    color: #fff;
-    font-size: 24;
-    padding: 10px 15px 5px 15px;
-
+    color: #B94A00;
+    font-size: 20;
 `;
 
-export const InfoModal = styled.Text`
-    color: #fff;
+export const PlayersRoom = styled.Text`
     font-size: 16;
-    text-align: justify;
-    padding: 3px 15px 5px 15px;
-`;
-
-export const ButtonModal = styled.TouchableOpacity`
-    background-color: #ac58aa;
-    width: 50%;
-    height: 40px;
-    align-items: center;
-    flex-direction: column;
-    border-radius: 4px;
-    position: absolute;
-	bottom: 0px;
-`;
-
-export const TextModal = styled.Text`
-    padding-top: 8px;
-    font-size: 18px;
-    color: #fff;
     font-weight: bold;
 `;
 
-export const InfoModalView = styled.View`
+export const ButtonRoom = styled.TouchableOpacity`
+    justify-content: center;
+    background-color: #D9BA8E;
+    width: 70%;
+    height: 40px;
+    border-radius: 30px;
     align-items: center;
-    position: relative;
-    height: 60%;
-`
+    border-style: solid;
+    border-width: 1px;
+    border-color: #5E3200;
+`;
+
+export const TextButtonRoom = styled.Text`
+
+`;
+
+export const ViewButtonRoom = styled.View`
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    width: 45%;
+
+`;

@@ -39,8 +39,7 @@ export default class Login extends Component{
     }
 
     handleSignInPress = async () => {
-        this.props.navigation.navigate('Home');
-            
+        this.props.navigation.navigate('Home');       
 }
 
     render(){  

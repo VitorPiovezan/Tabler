@@ -7,10 +7,22 @@ import {
     ButtonProfile,
     IconsProfile,
     ViewTextProfile,
-    TextBoxNameProfile
+    ImgHomeConfig,
+    TextBoxNameProfile,
+    TitleHome,
+    Input,
+    ViewRoom,
+    ViewOpenRoom,
+    ViewTitles,
+    TitleRoom,
+    PlayersRoom,
+    ButtonRoom,
+    TextButtonRoom,
+    ViewButtonRoom
 } from './styles';
 
-import { StyleSheet, Image, ImageBackground } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { StyleSheet, ImageBackground } from 'react-native';
 
 export default class Home extends Component{  
   render(){  
@@ -23,6 +35,7 @@ export default class Home extends Component{
                     <ButtonProfile onPress={() => this.props.navigation.navigate('Config') }>
                         <IconsProfile source={require('../../assets/configIcon.png')}/>
                     </ButtonProfile>
+                    <ImgHomeConfig source={require('../../assets/icon.png')}/>
                     <ButtonProfile onPress={() => this.props.navigation.navigate('EditProfile') } >
                         <IconsProfile source={require('../../assets/perfilIcon.png')}/>
                     </ButtonProfile>
@@ -32,6 +45,103 @@ export default class Home extends Component{
                     <TextBoxNameProfile>Bem Vindo Offar</TextBoxNameProfile>
                 </ViewTextProfile>
             </ViewHeaderHome>
+
+        <TitleHome>Salas Abertas</TitleHome>
+        <Input placeholder="Pesquisar salas.." />
+
+        <ViewOpenRoom>
+            <ScrollView>
+                
+                <ViewRoom>
+                    <ViewTitles>
+                        <TitleRoom>Descent to Avernus</TitleRoom>
+                        <PlayersRoom>6/10 Jogadores | 1/1 Mestre</PlayersRoom>
+                    </ViewTitles>
+                    
+                    <ViewButtonRoom><ButtonRoom>
+                        <TextButtonRoom>Join</TextButtonRoom>
+                    </ButtonRoom></ViewButtonRoom>
+                </ViewRoom>
+                
+                <ViewRoom>
+                    <ViewTitles>
+                        <TitleRoom>Table 1</TitleRoom>
+                        <PlayersRoom>4/10 Jogadores | 1/1 Mestre</PlayersRoom>
+                    </ViewTitles>
+                    
+                    <ViewButtonRoom><ButtonRoom>
+                        <TextButtonRoom>Join</TextButtonRoom>
+                    </ButtonRoom></ViewButtonRoom>
+                </ViewRoom>
+                
+                <ViewRoom>
+                    <ViewTitles>
+                        <TitleRoom>Table 2</TitleRoom>
+                        <PlayersRoom>7/10 Jogadores | 0/1 Mestre</PlayersRoom>
+                    </ViewTitles>
+                    
+                    <ViewButtonRoom><ButtonRoom>
+                        <TextButtonRoom>Join</TextButtonRoom>
+                    </ButtonRoom></ViewButtonRoom>
+                </ViewRoom>
+                
+                <ViewRoom>
+                    <ViewTitles>
+                        <TitleRoom>Table 3</TitleRoom>
+                        <PlayersRoom>9/10 Jogadores | 0/1 Mestre</PlayersRoom>
+                    </ViewTitles>
+                    
+                    <ViewButtonRoom><ButtonRoom>
+                        <TextButtonRoom>Join</TextButtonRoom>
+                    </ButtonRoom></ViewButtonRoom>
+                </ViewRoom>
+                
+                <ViewRoom>
+                    <ViewTitles>
+                        <TitleRoom>Table 4</TitleRoom>
+                        <PlayersRoom>9/10 Jogadores | 1/1 Mestre</PlayersRoom>
+                    </ViewTitles>
+                    
+                    <ViewButtonRoom><ButtonRoom>
+                        <TextButtonRoom>Join</TextButtonRoom>
+                    </ButtonRoom></ViewButtonRoom>
+                </ViewRoom>
+                
+                <ViewRoom>
+                    <ViewTitles>
+                        <TitleRoom>Table 5</TitleRoom>
+                        <PlayersRoom>6/10 Jogadores | 0/1 Mestre</PlayersRoom>
+                    </ViewTitles>
+                    
+                    <ViewButtonRoom><ButtonRoom>
+                        <TextButtonRoom>Join</TextButtonRoom>
+                    </ButtonRoom></ViewButtonRoom>
+                </ViewRoom>
+                
+                <ViewRoom>
+                    <ViewTitles>
+                        <TitleRoom>Table 6</TitleRoom>
+                        <PlayersRoom>2/10 Jogadores | 0/1 Mestre</PlayersRoom>
+                    </ViewTitles>
+                    
+                    <ViewButtonRoom><ButtonRoom>
+                        <TextButtonRoom>Join</TextButtonRoom>
+                    </ButtonRoom></ViewButtonRoom>
+                </ViewRoom>
+                
+                <ViewRoom>
+                    <ViewTitles>
+                        <TitleRoom>Table 7</TitleRoom>
+                        <PlayersRoom>6/10 Jogadores | 0/1 Mestre</PlayersRoom>
+                    </ViewTitles>
+                    
+                    <ViewButtonRoom><ButtonRoom>
+                        <TextButtonRoom>Join</TextButtonRoom>
+                    </ButtonRoom></ViewButtonRoom>
+                </ViewRoom>
+
+            </ScrollView>
+        </ViewOpenRoom>
 
         </ImageBackground>
       </ContainerHome> 
@@ -45,6 +155,7 @@ const styles = StyleSheet.create({
       height: '100%',
       width: '100%',
       resizeMode: 'cover',
+      alignItems: 'center',
 },
   container: {
     flex: 1,
