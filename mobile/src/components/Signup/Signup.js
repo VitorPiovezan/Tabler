@@ -74,7 +74,6 @@ export default class Signup extends Component{
             <Root><Container>
                 <ImageBackground source={require('../../assets/fundo.png')} style={styles.backgroundImage}>
                 <Logo source={require('../../assets/logo.png')}/>
-                <SubTitle>Jogue e Adquira Elos</SubTitle>
                 <Title>Cadastrar-se</Title>
                 <Inputs 
                     autoCapitalize='none'

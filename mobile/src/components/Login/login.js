@@ -39,17 +39,8 @@ export default class Login extends Component{
     }
 
     handleSignInPress = async () => {
-        if (this.state.email.length === 0 || this.state.password.length === 0){
-            this.setState({ error: 'Errou feio, errou rude meu jovem...' })
-            console.log(this.state.error);
-        } else {
-            this.props.navigation.navigate('Home');
-            this.setState({ error: 'Acho que foi' })
-            const response = await api.post('/users', {
-                email: this.state.email,
-                password: this.state.password,
-        });    
-    }
+        this.props.navigation.navigate('Home');
+            
 }
 
     render(){  
@@ -63,7 +54,6 @@ export default class Login extends Component{
                 backgroundColor="#5E3200"
             />
                 <Logo source={require('../../assets/logo.png')}/>
-                <SubTitle>Jogue e Adiquira Elos</SubTitle>
                 <Title>Login</Title>
                 
                 <Inputs 

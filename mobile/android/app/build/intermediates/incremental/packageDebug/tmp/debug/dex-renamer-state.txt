@@ -1,4 +1,4 @@
-#Sat May 23 21:51:54 BRT 2020
+#Sun May 24 16:11:19 BRT 2020
 base.0=/home/vitor/Tabler/mobile/android/app/build/intermediates/transforms/dexMerger/debug/0
 path.0=classes.dex
 renamed.0=classes.dex

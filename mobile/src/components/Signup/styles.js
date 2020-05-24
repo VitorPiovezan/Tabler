@@ -33,8 +33,9 @@ export const Title = styled.Text`
 
 export const Logo = styled.Image`
     margin-top: -70px;
-    width: 150px;
-    height: 150px;
+    width: 250px;
+    height: 250px;
+    margin-bottom: -70px;
 `
 
 export const Inputs = styled.TextInput`

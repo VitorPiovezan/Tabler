@@ -608,7 +608,9 @@ drawable abc_textfield_search_default_mtrl_alpha
 drawable abc_textfield_search_material
 drawable abc_vector_test
 drawable background_splash
+drawable fundo
 drawable icon
+drawable iconsplash
 drawable notification_action_background
 drawable notification_bg
 drawable notification_bg_low
