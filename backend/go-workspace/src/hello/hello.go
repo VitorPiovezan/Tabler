@@ -6,6 +6,6 @@ import (
 
 func main() {
 	for {
-		fmt.Println("e")
+		fmt.Println("Hello world")
 	}
 }
