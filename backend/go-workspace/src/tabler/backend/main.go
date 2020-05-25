@@ -45,32 +45,59 @@ func main() {
 	//MUX IS USED TO CREATE THE BACKEND ROUTES
 	r := mux.NewRouter()
 
-	//CREATING THE ROUTES
-	//THE FIRST PARAMETER IS THE NAME OF THE ROUT "/something/whatever", THE SECOND, IS THE FUNCTION IT CALLS.
-	//THEN WE USE .Methods(GET OR POST OR DELETE OR WHATEVER) TO SPECIFY THE METHOD WE ARE USING IN THIS ROUT
+	//----------------------ROOM ROUTES--------------------------------------
 	r.HandleFunc("/api/homePage", homePage).Methods("GET")
-	//r.HandleFunc("/api/searchRooms/{info}", searchRooms).Methods("GET")
+	r.HandleFunc("/api/searchRooms/{tituloMesa}", searchRooms).Methods("GET")
 	r.HandleFunc("/api/createRoom", createRoom).Methods("POST")
 	//r.HandleFunc("/api/updateRoom/{id}", updateRoom).Methods("PUT")
-	//r.HandleFunc("/api/deleteRoom/{id}", deleteRoom).Methods("DELETE")
+	r.HandleFunc("/api/deleteRoom/{id}", deleteRoom).Methods("DELETE")
+	//-----------------------------------------------------------------------
+
+	//----------------------USER ROUTES--------------------------------------
+	r.HandleFunc("/api/createUser", createUser).Methods("POST")
+	//r.HandleFunc("/api/updateProfile/{id}", updateProfile).Methods("DELETE")
+	//-----------------------------------------------------------------------
 
 	log.Println("Server Online!")
-	//SETS THE SERVER UP AT PORT 3035. YOU CAN USE WHATEVER PORT YOU WANT
-	//THE log.Fatal FUNCTION, IS USED JUST TO LOG THE ERRORS IF THEY HAPPEN
+
 	log.Fatal(http.ListenAndServe(":8000", r))
 
-	//NEED TO CREATE SEPARATE FUNCTION TO INSERT (DUNNO HOW :^[ )
-	/*insert, err := db.Query("INSERT INTO usuario(NOME_USUAR, APELIDO_USUAR, EMAIL_USUAR, AVATAR_USUAR) VALUES ('Rafael Carvalho', 'Offar', 'email@email.com','C:/Users/Offar/Pictures/osmar')")
+}
 
+//----------------------USER FUNCTIONS--------------------------------------
+func createUser(w http.ResponseWriter, r *http.Request) {
+	stmtIns, err := db.Prepare("INSERT INTO usuario(NOME_USUAR, APELIDO_USUAR, SENHA_USUAR, EMAIL_USUAR, AVATAR_USUAR) VALUES (?,?,?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
 
-	defer insert.Close()*/
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	keyVal := make(map[string]string)
+	json.Unmarshal(body, &keyVal)
+	nomeUsuar := keyVal["NOME_USUAR"]
+	apelidoUsuar := keyVal["APELIDO_USUAR"]
+	senhaUsuar := keyVal["SENHA_USUAR"]
+	emailUsuar := keyVal["EMAIL_USUAR"]
+	avatarUsuar := keyVal["AVATAR_USUAR"]
+
+	_, err = stmtIns.Exec(nomeUsuar, apelidoUsuar, senhaUsuar, emailUsuar, avatarUsuar)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	fmt.Fprintf(w, "Usuario Criado!")
 
 }
 
-//EVERY FUNCTION THAT IS A ROUT HANDLER NEED TO HAVES THESE PROPERTIES. SO, BASICALY JUST COPY PASTE IT WHEN NEEDED.
+func updateProfile(w http.ResponseWriter, r *http.Request) {
+}
+
+//--------------------------------------------------------------------------
+
 //homePage FUNCTION
 func homePage(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
@@ -131,9 +158,33 @@ func createRoom(w http.ResponseWriter, r *http.Request) {
 }
 
 //searchRooms FUNCTION
-
 func searchRooms(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+	var rooms []Room
+	params := mux.Vars(r)
+
+	searchKey := "%" + params["tituloMesa"] + "%"
+
+	result, err := db.Query("SELECT ID_MESA, TITULO_MESA, DESC_MESA FROM mesa WHERE TITULO_MESA LIKE ?", searchKey)
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer result.Close()
+
+	var room Room
+
+	for result.Next() {
+		err := result.Scan(&room.ID, &room.Title, &room.Desc)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		rooms = append(rooms, room)
+	}
+
+	json.NewEncoder(w).Encode(rooms)
 }
 
 //joinRoom FUNCTION
@@ -148,7 +199,20 @@ func updateRoom(w http.ResponseWriter, r *http.Request) {
 
 //deleteRoom FUNCTION
 func deleteRoom(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+
+	stmt, err := db.Prepare("DELETE FROM mesa WHERE ID_MESA = ?")
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	_, err = stmt.Exec(params["id"])
+	if err != nil {
+		panic(err.Error())
+	}
+
+	fmt.Fprintf(w, "Mesa com o ID = %s foi deletada", params["id"])
 }
 
 //-------------------------------------------------------
