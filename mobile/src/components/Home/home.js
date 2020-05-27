@@ -21,209 +21,118 @@ import {
     ViewButtonRoom
 } from './styles';
 
-import { ScrollView } from 'react-native-gesture-handler';
-import { StyleSheet, ImageBackground } from 'react-native';
+import { ScrollView, FlatList } from 'react-native-gesture-handler';
+import { StyleSheet, ImageBackground, Text } from 'react-native';
+import axios from 'axios';
+export default class Home extends Component {
+    
+    /* constructor(props) {
+        super(props);
+        this.state = {
+            data: []
+        }
+    }
 
-export default class Home extends Component{  
-  render(){  
-      return(   
-      <ContainerHome>
-        <ImageBackground source={require('../../assets/fundo.png')} style={styles.backgroundImage} >
+    componentDidMount() {
+        fetch('https://randomuser.me/api/?results=10')
+            .then( res => res.json() )
+            .then( res => {
+                this.setState({
+                    data: res.results || []
+                })
+                console.log(this.state.data)
+    })} */
 
-        <ViewHeaderHome>
-                <ViewConfigsProfile>
-                    <ButtonProfile onPress={() => this.props.navigation.navigate('Config') }>
-                        <IconsProfile source={require('../../assets/configIcon.png')}/>
-                    </ButtonProfile>
-                    <ImgHomeConfig source={require('../../assets/icon.png')}/>
-                    <ButtonProfile onPress={() => this.props.navigation.navigate('EditProfile') } >
-                        <IconsProfile source={require('../../assets/perfilIcon.png')}/>
-                    </ButtonProfile>
-                </ViewConfigsProfile>
+    state = {
+        nameList: [],
+        firstName: []
+    }
 
-                <ViewTextProfile>
-                    <TextBoxNameProfile>Bem Vindo Offar</TextBoxNameProfile>
-                </ViewTextProfile>
-            </ViewHeaderHome>
+    componentDidMount() {
+        axios.get('https://randomuser.me/api/?results=10')
+        
+            .then(res => {
+                const nameList = res.data.results;
+                const firstName = res.data.results;
+                this.setState({ nameList });
+                this.setState({ firstName });
+                console.log(this.state.firstName[0].name.first)
+            })
+            
+      }
 
-        <TitleHome>Salas Abertas</TitleHome>
-        <Input placeholder="Pesquisar salas.." />
+    render() {
 
-        <ViewOpenRoom>
-            <ScrollView>
-                
-                <ViewRoom>
-                    <ViewTitles>
-                        <TitleRoom>Descent to Avernus</TitleRoom>
-                        <PlayersRoom>6/10 Jogadores | 1/1 Mestre</PlayersRoom>
-                    </ViewTitles>
-                    
-                    <ViewButtonRoom><ButtonRoom>
-                        <TextButtonRoom>Join</TextButtonRoom>
-                    </ButtonRoom></ViewButtonRoom>
-                </ViewRoom>
-                
-                <ViewRoom>
-                    <ViewTitles>
-                        <TitleRoom>Table 1</TitleRoom>
-                        <PlayersRoom>4/10 Jogadores | 1/1 Mestre</PlayersRoom>
-                    </ViewTitles>
-                    
-                    <ViewButtonRoom><ButtonRoom>
-                        <TextButtonRoom>Join</TextButtonRoom>
-                    </ButtonRoom></ViewButtonRoom>
-                </ViewRoom>
-                
-                <ViewRoom>
-                    <ViewTitles>
-                        <TitleRoom>Table 2</TitleRoom>
-                        <PlayersRoom>7/10 Jogadores | 0/1 Mestre</PlayersRoom>
-                    </ViewTitles>
-                    
-                    <ViewButtonRoom><ButtonRoom>
-                        <TextButtonRoom>Join</TextButtonRoom>
-                    </ButtonRoom></ViewButtonRoom>
-                </ViewRoom>
-                
-                <ViewRoom>
-                    <ViewTitles>
-                        <TitleRoom>Table 3</TitleRoom>
-                        <PlayersRoom>9/10 Jogadores | 0/1 Mestre</PlayersRoom>
-                    </ViewTitles>
-                    
-                    <ViewButtonRoom><ButtonRoom>
-                        <TextButtonRoom>Join</TextButtonRoom>
-                    </ButtonRoom></ViewButtonRoom>
-                </ViewRoom>
-                
-                <ViewRoom>
-                    <ViewTitles>
-                        <TitleRoom>Table 4</TitleRoom>
-                        <PlayersRoom>9/10 Jogadores | 1/1 Mestre</PlayersRoom>
-                    </ViewTitles>
-                    
-                    <ViewButtonRoom><ButtonRoom>
-                        <TextButtonRoom>Join</TextButtonRoom>
-                    </ButtonRoom></ViewButtonRoom>
-                </ViewRoom>
-                
-                <ViewRoom>
-                    <ViewTitles>
-                        <TitleRoom>Table 5</TitleRoom>
-                        <PlayersRoom>6/10 Jogadores | 0/1 Mestre</PlayersRoom>
-                    </ViewTitles>
-                    
-                    <ViewButtonRoom><ButtonRoom>
-                        <TextButtonRoom>Join</TextButtonRoom>
-                    </ButtonRoom></ViewButtonRoom>
-                </ViewRoom>
-                
-                <ViewRoom>
-                    <ViewTitles>
-                        <TitleRoom>Table 6</TitleRoom>
-                        <PlayersRoom>2/10 Jogadores | 0/1 Mestre</PlayersRoom>
-                    </ViewTitles>
-                    
-                    <ViewButtonRoom><ButtonRoom>
-                        <TextButtonRoom>Join</TextButtonRoom>
-                    </ButtonRoom></ViewButtonRoom>
-                </ViewRoom>
-                
-                <ViewRoom>
-                    <ViewTitles>
-                        <TitleRoom>Table 7</TitleRoom>
-                        <PlayersRoom>6/10 Jogadores | 0/1 Mestre</PlayersRoom>
-                    </ViewTitles>
-                    
-                    <ViewButtonRoom><ButtonRoom>
-                        <TextButtonRoom>Join</TextButtonRoom>
-                    </ButtonRoom></ViewButtonRoom>
-                </ViewRoom>
+        const {firstName} = this.state;
+        const {nameList} = this.state;
 
-            </ScrollView>
-        </ViewOpenRoom>
+        return (
+            <ContainerHome>
+                <ImageBackground source={require('../../assets/fundo.png')} style={styles.backgroundImage} >
 
-        </ImageBackground>
-      </ContainerHome> 
+                    <ViewHeaderHome>
+                        <ViewConfigsProfile>
+                            <ButtonProfile onPress={() => this.props.navigation.navigate('Config')}>
+                                <IconsProfile source={require('../../assets/configIcon.png')} />
+                            </ButtonProfile>
+                            <ImgHomeConfig source={require('../../assets/icon.png')} />
+                            <ButtonProfile onPress={() => this.props.navigation.navigate('EditProfile')} >
+                                <IconsProfile source={require('../../assets/perfilIcon.png')} />
+                            </ButtonProfile>
+                        </ViewConfigsProfile>
 
-)  
-}  
+                        <ViewTextProfile>
+                            {this.state.firstName.map(user => <TextBoxNameProfile>Bem Vindo {user.name.first}</TextBoxNameProfile>)}
+                        </ViewTextProfile>
+                    </ViewHeaderHome>
+
+                    <TitleHome>Salas Abertas</TitleHome>
+                    <Input placeholder="Pesquisar salas.." />
+
+                    <ViewOpenRoom>
+                        <ScrollView>
+
+                              <FlatList
+                                data={this.state.nameList}
+                                renderItem={({ item }) =>
+
+                                    <ViewRoom>
+                                        <ViewTitles>
+                                            <TitleRoom>{item.name.first}</TitleRoom>
+                                            <PlayersRoom>/10 Jogadores | /1 Mestre</PlayersRoom>
+                                        </ViewTitles>
+
+                                        <ViewButtonRoom><ButtonRoom>
+                                            <TextButtonRoom>Join</TextButtonRoom>
+                                        </ButtonRoom></ViewButtonRoom>
+                                    </ViewRoom>
+
+                                } />  
+
+                        </ScrollView>
+                    </ViewOpenRoom>
+
+                </ImageBackground>
+            </ContainerHome>
+
+        )
+    }
 }
 
 const styles = StyleSheet.create({
-  backgroundImage: {
-      height: '100%',
-      width: '100%',
-      resizeMode: 'cover',
-      alignItems: 'center',
-},
-  container: {
-    flex: 1,
-    backgroundColor: '#D9BA8E',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  body: {
-      backgroundColor: '#D9BA8E'
-  }
+    backgroundImage: {
+        height: '100%',
+        width: '100%',
+        resizeMode: 'cover',
+        alignItems: 'center',
+    },
+    container: {
+        flex: 1,
+        backgroundColor: '#D9BA8E',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    body: {
+        backgroundColor: '#D9BA8E'
+    }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* export default class Home extends Component{  
-    render() {  
-        return(  
-
-    <Container>
-        <Card>
-            <Image source={require('../../assets/perfil_image.png')} />
-            <Info>
-                <Nome>Nome do Jogador</Nome>
-                <InfoProfile>Aqui é onde vai a definição do jogador, onde informa o que ele joga.</InfoProfile>
-            </Info>
-        </Card>
-        <ButtonStyles>
-            <Button color={"#fbae5c"}><IconDeslike source={require('../../assets/tresh_ico_withe.png')} /></Button>
-            <Button color={"#c48eff"}><IconLike source={require('../../assets/controll_ico_white.png')} /></Button>
-        </ButtonStyles>
-    </Container>
-)  
-    }  
-}   */
- 
-
-/*   <Container>
-            <Card>
-                <Image source={require('../../assets/logo.png')}/>
-                <Info>
-                    <Nome>JohnnBZ</Nome>
-                    <Info>Jogo LOL e Dota, sou gay duas vezes;</Info>
-                    <ButtonStyles>
-                    <Button><Icon source={require('../../assets/logo.png')}/></Button>
-                    <Button><Icon source={require('../../assets/logo.png')}/></Button>
-                    </ButtonStyles>
-                </Info>
-            </Card>
-       </Container>      */
