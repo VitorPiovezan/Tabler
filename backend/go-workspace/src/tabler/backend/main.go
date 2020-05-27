@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http" //TO HANDLE HTTP REQUESTS
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
@@ -56,6 +57,7 @@ func main() {
 	//----------------------USER ROUTES--------------------------------------
 	r.HandleFunc("/api/createUser", createUser).Methods("POST")
 	r.HandleFunc("/api/updateProfile", updateProfile).Methods("PUT")
+	r.HandleFunc("/api/uploadAvatar", uploadAvatar).Methods("POST")
 	//-----------------------------------------------------------------------
 
 	log.Println("Server Online!")
@@ -89,6 +91,7 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintf(w, "Usuario Criado!")
+	w.WriteHeader(http.StatusOK)
 
 }
 
@@ -119,6 +122,66 @@ func updateProfile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintf(w, "Dados do usuario alterados com sucesso!")
+	w.WriteHeader(http.StatusOK)
+}
+
+func uploadAvatar(w http.ResponseWriter, r *http.Request) {
+
+	var picPath string
+	var userName string
+
+	userName = "Offar"
+
+	picPath = "ProfilePics/" + userName
+
+	//---------------------CREATING FOLDER--------------------
+	//Sets folder path and folder name
+	_, err := os.Stat(picPath)
+
+	//Checks if that folder path already exists
+	//If the nested folder exists, do nothing
+	if os.IsNotExist(err) {
+		errDir := os.MkdirAll(picPath, os.ModePerm)
+		stmtUpdt, err := db.Prepare("UPDATE usuario SET AVATAR_USUAR = ? WHERE APELIDO_USUAR = ?")
+		_, err = stmtUpdt.Exec(picPath, userName)
+		if err != nil {
+			panic(err.Error())
+		}
+		if errDir != nil {
+			log.Fatal(err)
+		}
+	}
+	//--------------------------------------------------------
+
+	//----------------------SAVING FILE----------------------
+	r.ParseMultipartForm(10 << 20)
+
+	file, handler, err := r.FormFile("myFile")
+	if err != nil {
+		panic(err.Error())
+	}
+	defer file.Close()
+
+	fmt.Printf("Uploaded File: %+v\n", handler.Filename)
+	fmt.Printf("File Size: %+v\n", handler.Size)
+	fmt.Printf("MIME Header: %+v\n", handler.Header)
+
+	tempFile, err := ioutil.TempFile(picPath, userName+"-*.png")
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer tempFile.Close()
+
+	fileBytes, err := ioutil.ReadAll(file)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	tempFile.Write(fileBytes)
+	w.WriteHeader(http.StatusOK)
+	//------------------------------------------------------------------
 }
 
 //--------------------------------------------------------------------------
@@ -148,6 +211,7 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(rooms)
+	w.WriteHeader(http.StatusOK)
 }
 
 //--------------ROOM FUNCTIONS---------------------------
@@ -181,6 +245,7 @@ func createRoom(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintf(w, "Mesa criada com sucesso!")
+	w.WriteHeader(http.StatusOK)
 }
 
 //searchRooms FUNCTION
@@ -211,15 +276,11 @@ func searchRooms(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(rooms)
+	w.WriteHeader(http.StatusOK)
 }
 
 //joinRoom FUNCTION
 func joinRoom(w http.ResponseWriter, r *http.Request) {
-
-	stmtIns, err := db.Prepare("INSERT INTO mesa_jogadores(ID_MESA, ID_USUAR, MESTRE_JOGA, FICHA_JOGA) VALUES (?,?,?,?)")
-	if err != nil {
-		panic(err.Error())
-	}
 
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -231,7 +292,54 @@ func joinRoom(w http.ResponseWriter, r *http.Request) {
 	idMesa := keyVal["ID_MESA"]
 	idUsuar := keyVal["ID_USUAR"]
 	mestreJoga := keyVal["MESTRE_JOGA"]
-	fichaJoga := keyVal["FICHA_JOGA"]
+	userName := idUsuar
+	charName := "Osmar"
+
+	sheetPath := "CharSheet/" + userName + "/" + charName
+
+	//---------------------CREATING FOLDER--------------------
+	_, errFolder := os.Stat(sheetPath)
+
+	if os.IsNotExist(errFolder) {
+		errDir := os.MkdirAll(sheetPath, os.ModePerm)
+		if errDir != nil {
+			log.Fatal(errFolder)
+		}
+	}
+	//--------------------------------------------------------
+
+	//----------------------SAVING FILE----------------------
+	r.ParseMultipartForm(10 << 20)
+
+	file, handler, err := r.FormFile("myFile")
+	if err != nil {
+		panic(err.Error())
+	}
+	defer file.Close()
+
+	fmt.Printf("Uploaded File: %+v\n", handler.Filename)
+	fmt.Printf("File Size: %+v\n", handler.Size)
+	fmt.Printf("MIME Header: %+v\n", handler.Header)
+
+	tempFile, err := ioutil.TempFile(sheetPath, charName+"-*.pdf")
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer tempFile.Close()
+
+	fileBytes, err := ioutil.ReadAll(file)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	tempFile.Write(fileBytes)
+	//------------------------------------------------------------------
+
+	stmtIns, err := db.Prepare("INSERT INTO mesa_jogadores(ID_MESA, ID_USUAR, MESTRE_JOGA, FICHA_JOGA) VALUES (?,?,?,?)")
+	if err != nil {
+		panic(err.Error())
+	}
 
 	//CHECK IF THERE'S ALREADY A DM AT THE TABLE
 	var isThereDm int
@@ -249,12 +357,13 @@ func joinRoom(w http.ResponseWriter, r *http.Request) {
 
 	} else { //IF THERE'S NO DM, INSERT THE PLAYER IN THE ROOM
 
-		_, err = stmtIns.Exec(idMesa, idUsuar, mestreJoga, fichaJoga)
+		_, err = stmtIns.Exec(idMesa, idUsuar, mestreJoga, sheetPath)
 		if err != nil {
 			panic(err.Error())
 		}
 
 		fmt.Fprintf(w, "Jogador inserido na mesa!")
+		w.WriteHeader(http.StatusOK)
 	}
 
 }
@@ -285,7 +394,7 @@ func updateRoom(w http.ResponseWriter, r *http.Request) {
 		panic(err.Error())
 	}
 
-	fmt.Fprintf(w, "Dados da mesa alterados com sucesso!")
+	w.WriteHeader(http.StatusOK)
 }
 
 //deleteRoom FUNCTION
@@ -312,6 +421,7 @@ func deleteRoom(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintf(w, "Mesa com o ID = %s foi deletada", idMesa)
+	w.WriteHeader(http.StatusOK)
 }
 
 //-------------------------------------------------------
