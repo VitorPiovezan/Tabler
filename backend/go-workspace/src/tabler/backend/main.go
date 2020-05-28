@@ -11,6 +11,7 @@ import (
 	"log"
 	"net/http" //TO HANDLE HTTP REQUESTS
 	"os"
+	"tabler/backend/mypackages/controllers"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
@@ -28,21 +29,11 @@ var err error
 
 func main() {
 
-	db, err = sql.Open("mysql", "user_tester:123456@tcp(127.0.0.1:3000)/tabler_db")
-
-	if err != nil {
-		panic(err.Error())
-	}
-
-	defer db.Close()
-
-	fmt.Println("Connected to DB!")
-
 	//MUX IS USED TO CREATE THE BACKEND ROUTES
 	r := mux.NewRouter()
 
 	//----------------------ROOM ROUTES--------------------------------------
-	r.HandleFunc("/api/homePage", homePage).Methods("GET")
+	r.HandleFunc("/api/homePage", controllers.HomePage).Methods("GET")
 	r.HandleFunc("/api/searchRooms/{tituloMesa}", searchRooms).Methods("GET")
 	r.HandleFunc("/api/createRoom", createRoom).Methods("POST")
 	r.HandleFunc("/api/joinRoom", joinRoom).Methods("POST")
@@ -51,42 +42,14 @@ func main() {
 	//-----------------------------------------------------------------------
 
 	//----------------------USER ROUTES--------------------------------------
-	r.HandleFunc("/api/createUser", createUser).Methods("POST")
-	r.HandleFunc("/api/updateProfile", updateProfile).Methods("PUT")
-	r.HandleFunc("/api/uploadAvatar", uploadAvatar).Methods("POST")
+	r.HandleFunc("/api/createUser", controllers.CreateUser).Methods("POST")
+	r.HandleFunc("/api/updateProfile", controllers.UpdateProfile).Methods("PUT")
+	r.HandleFunc("/api/uploadAvatar", controllers.UploadAvatar).Methods("POST")
 	//-----------------------------------------------------------------------
 
 	log.Println("Server Online!")
 	log.Fatal(http.ListenAndServe(":8000", r))
 
-}
-
-//homePage FUNCTION
-func homePage(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	var rooms []Room
-
-	result, err := db.Query("SELECT ID_MESA, TITULO_MESA, DESC_MESA FROM mesa")
-
-	if err != nil {
-
-		panic(err.Error())
-	}
-
-	defer result.Close()
-
-	for result.Next() {
-		var room Room
-
-		err := result.Scan(&room.ID, &room.Title, &room.Desc)
-		if err != nil {
-			panic(err.Error())
-		}
-		rooms = append(rooms, room)
-	}
-
-	json.NewEncoder(w).Encode(rooms)
-	w.WriteHeader(http.StatusOK)
 }
 
 //--------------ROOM FUNCTIONS---------------------------
