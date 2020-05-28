@@ -19,7 +19,7 @@ import {
     TextBoxChatUserLastMassage,
     TextBoxChatUserName,
     ButtonChatUser
-} from './styles';
+} from '../Home/styles';
 import { ScrollView } from 'react-native-gesture-handler';
 import { StyleSheet , ImageBackground} from 'react-native';
 

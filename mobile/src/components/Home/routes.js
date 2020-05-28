@@ -1,6 +1,6 @@
 import Home from './home';
 import Profile from '../Profile/profile';
-import Feed from './feed';
+import Feed from '../Feed/feed';
 
 import { createAppContainer } from 'react-navigation';
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
@@ -8,15 +8,16 @@ import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 
 const RouterBase = createMaterialTopTabNavigator(  
   {   
-      Profile: Profile,
+       
+      Feed: Feed, 
       Home: Home,  
-      Feed: Feed,  
+      Profile: Profile,
   },  
   {  
     keyboardDismissMode: 'auto',
     swipeEnabled: true,
-    onSwipeStart: 'Profile',
-    onSwipeEnd: 'Feed',
+    onSwipeStart: 'Feed',
+    onSwipeEnd: 'Profile',
       tabBarOptions: {  
           activeTintColor: 'white',  
           showIcon: false,  

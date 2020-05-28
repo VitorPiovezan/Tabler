@@ -13,7 +13,6 @@ import {
     TextButton,
     ErrorMessage
 } from './styles';
-import api from '../../api/api';
 
 
 export default class Login extends Component{  

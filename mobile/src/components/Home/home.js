@@ -26,45 +26,21 @@ import { StyleSheet, ImageBackground, Text } from 'react-native';
 import axios from 'axios';
 export default class Home extends Component {
     
-    /* constructor(props) {
+    constructor(props) {
         super(props);
         this.state = {
-            data: []
-        }
-    }
+            users: []
+    }}
 
     componentDidMount() {
-        fetch('https://randomuser.me/api/?results=10')
-            .then( res => res.json() )
-            .then( res => {
-                this.setState({
-                    data: res.results || []
-                })
-                console.log(this.state.data)
-    })} */
-
-    state = {
-        nameList: [],
-        firstName: []
-    }
-
-    componentDidMount() {
-        axios.get('https://randomuser.me/api/?results=10')
-        
-            .then(res => {
-                const nameList = res.data.results;
-                const firstName = res.data.results;
-                this.setState({ nameList });
-                this.setState({ firstName });
-                console.log(this.state.firstName[0].name.first)
+        axios.get('https://jsonplaceholder.typicode.com/users')   
+        .then(res => {
+                this.setState({ users: res.data });
+                console.log(this.state);
             })
-            
       }
 
     render() {
-
-        const {firstName} = this.state;
-        const {nameList} = this.state;
 
         return (
             <ContainerHome>
@@ -82,7 +58,7 @@ export default class Home extends Component {
                         </ViewConfigsProfile>
 
                         <ViewTextProfile>
-                            {this.state.firstName.map(user => <TextBoxNameProfile>Bem Vindo {user.name.first}</TextBoxNameProfile>)}
+                            <TextBoxNameProfile>Bem Vindo Caralho</TextBoxNameProfile>
                         </ViewTextProfile>
                     </ViewHeaderHome>
 
@@ -92,22 +68,17 @@ export default class Home extends Component {
                     <ViewOpenRoom>
                         <ScrollView>
 
-                              <FlatList
-                                data={this.state.nameList}
-                                renderItem={({ item }) =>
 
-                                    <ViewRoom>
+                                    {this.state.users.map(item => <ViewRoom>
                                         <ViewTitles>
-                                            <TitleRoom>{item.name.first}</TitleRoom>
+                                            <TitleRoom>{item.name}</TitleRoom>
                                             <PlayersRoom>/10 Jogadores | /1 Mestre</PlayersRoom>
                                         </ViewTitles>
 
                                         <ViewButtonRoom><ButtonRoom>
                                             <TextButtonRoom>Join</TextButtonRoom>
                                         </ButtonRoom></ViewButtonRoom>
-                                    </ViewRoom>
-
-                                } />  
+                                    </ViewRoom>)}                                
 
                         </ScrollView>
                     </ViewOpenRoom>
